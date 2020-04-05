@@ -1,6 +1,6 @@
-# discord-bot-template
+# Discord Bot Fan-Far-Naque
 
-Template de bot Discord.
+Bot Discord pour jouer à Fan-Far-Naque
 
 ## Lancement
 
