@@ -12,6 +12,19 @@ def singleton(className):
     return get_instance
 
 
+latin = ["i", "v", "x", "l", "c", "d", "m"]
+languages = [
+    ("latin", latin),
+    ("fanf", ["fan", "far", "naque", "gre", "noble", "cd", "troll"]),
+    ("poke", ["po", "ke", "mon", "gotta", "catch", "em", "all"]),
+]
+
+def get_lang_dico(lang):
+    for name, words_list in languages:
+        if lang == name:
+            return words_list
+
+
 @singleton
 class Game():
 
@@ -20,18 +33,25 @@ class Game():
 
     def __init__(self):
         print("Init", __class__.__name__)
+        self.dico = get_lang_dico("fanf")
         with open('order.json') as f:
             data = json.load(f)
             self.order = data['order']
 
     async def evaluate(self, message):
         # check if message is part of the game
-        if message.content not in ["i", "v", "x"]:
+        if message.content not in self.dico:
             return
+
+        # get the appropriate latin word
+        for lat_word, lang_word in zip(latin, self.dico):
+            if message.content == lang_word:
+                word = lat_word
+                break
 
         # get current state
         cur_state = self.order[self.current_state]
-        if message.content == cur_state[0]:
+        if word == cur_state[0]:
             # if message is correct, go to next item
             self.current_state+=1
             # avoid out of range
