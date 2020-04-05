@@ -1,6 +1,6 @@
 # discord-bot-template
 
-Template de bot Discord
+Template de bot Discord.
 
 ## Lancement
 
@@ -16,4 +16,4 @@ classe heritant de `actions.AbstractAction` (voir la documentation dans `action.
 chaque methode, l'action `actions.Help` peut etre prise comme exemple)
 
 Une fois la classe implementee, ajouter l'action avec `ActionList.add_action(<classe>)` au debut de
-`memotron.py`
+`main.py`

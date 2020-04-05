@@ -4,7 +4,9 @@ import discord
 
 from actions.action_list import ActionList
 
+# Don't orget to include here your new actions
 from actions.help import Help
+
 
 # Check if token was given
 if len(sys.argv) < 2:
