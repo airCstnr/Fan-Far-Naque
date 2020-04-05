@@ -24,11 +24,15 @@ if len(sys.argv) > 2 and sys.argv[2] == "--test":
 
 client = discord.Client()
 
+if test_mode:
+    # Add logging system
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+
 
 # Add here your different actions
 ActionList.add_action(Help)
 ActionList.add_action(Start)
-
 
 
 def action_called(action, message_content):
