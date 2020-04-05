@@ -22,7 +22,7 @@ class Help(AbstractAction):
 
     @staticmethod
     async def on_call(message, client):
-        help_txt = "*Discord Bot Template par Maxence Blomme*\n```"
+        help_txt = "*Fan-Far-Naque!*\n```"
         shorts = []
         fulls = []
         descriptions = []
@@ -49,6 +49,6 @@ class Help(AbstractAction):
                 fulls[i] + ((longest_full - len(fulls[i])) * " "),
                 descriptions[i]
             )
-        help_txt += "```\nSource: https://gitlab.com/maxence.blomme/discord-bot-template"
+        help_txt += "```"
 
         await message.channel.send(help_txt)
