@@ -1,6 +1,6 @@
-# discord-bot-template
+# Discord Bot Fan-Far-Naque
 
-Template de bot Discord
+Bot Discord pour jouer à Fan-Far-Naque
 
 ## Lancement
 
@@ -16,4 +16,4 @@ classe heritant de `actions.AbstractAction` (voir la documentation dans `action.
 chaque methode, l'action `actions.Help` peut etre prise comme exemple)
 
 Une fois la classe implementee, ajouter l'action avec `ActionList.add_action(<classe>)` au debut de
-`memotron.py`
+`main.py`

@@ -4,7 +4,10 @@ import discord
 
 from actions.action_list import ActionList
 
+# Don't orget to include here your new actions
 from actions.help import Help
+from actions.start import Start
+
 
 # Check if token was given
 if len(sys.argv) < 2:
@@ -21,8 +24,11 @@ if len(sys.argv) > 2 and sys.argv[2] == "--test":
 
 client = discord.Client()
 
+
 # Add here your different actions
 ActionList.add_action(Help)
+ActionList.add_action(Start)
+
 
 
 def action_called(action, message_content):
@@ -53,7 +59,7 @@ async def on_ready():
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
-    print('------')
+    print('READY')
 
 
 client.run(TOKEN)
