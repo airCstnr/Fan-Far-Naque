@@ -1,3 +1,4 @@
+import sys
 import json
 
 
@@ -23,3 +24,26 @@ class Game():
             data = json.load(f)
             self.order = data['order']
 
+    async def evaluate(self, message):
+        # check if message is part of the game
+        if message.content not in ["i", "v", "x"]:
+            return
+
+        # get current state
+        cur_state = self.order[self.current_state]
+        if message.content == cur_state[0]:
+            # if message is correct, go to next item
+            self.current_state+=1
+            # avoid out of range
+            if self.order[self.current_state][0] == "END":
+                self.game_started = False
+                await message.channel.send("Bravo, tu es arrivé au bout du jeu!")
+                return
+            # ok, continue the game
+            #await message.channel.send("Super, continue!")
+            return
+        else:
+            # you lost the game
+            self.current_state = 0
+            await message.channel.send("Raté! Tu en étais à {0}, recommence!".format(cur_state[1]))
+            return
