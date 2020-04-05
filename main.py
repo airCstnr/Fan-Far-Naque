@@ -8,6 +8,8 @@ from actions.action_list import ActionList
 from actions.help import Help
 from actions.start import Start
 
+from game import Game
+
 
 # Check if token was given
 if len(sys.argv) < 2:
@@ -24,11 +26,15 @@ if len(sys.argv) > 2 and sys.argv[2] == "--test":
 
 client = discord.Client()
 
+if test_mode:
+    # Add logging system
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
+
 
 # Add here your different actions
 ActionList.add_action(Help)
 ActionList.add_action(Start)
-
 
 
 def action_called(action, message_content):
@@ -51,15 +57,43 @@ async def on_message(message):
     if message.author == client.user:
         return
 
+    # get ongoing game
+    game = Game()
+    if game.game_started:
+
+        # check if message is part of the game
+        if message.content not in ["fan", "far", "naque"]:
+            return
+
+        # get current state
+        cur_state = game.order[game.current_state]
+        if message.content == cur_state[0]:
+            # if message is correct, go to next item
+            game.current_state+=1
+            # avoid out of range
+            if game.current_state >= len(game.order):
+                game.game_started = False
+                await message.channel.send("Bravo, tu es arrivé au bout du jeu!")
+                return
+            # ok, continue the game
+            #await message.channel.send("Super, continue!")
+            return
+        else:
+            # you lost the game
+            game.current_state = 0
+            await message.channel.send("Raté! Tu en étais à {0}, recommence!".format(cur_state[1]))
+            return
+
     await parse_command(message)
 
 
 @client.event
 async def on_ready():
-    print('Logged in as')
-    print(client.user.name)
-    print(client.user.id)
+    print()
+    print('Logged in as', client.user.name)
+    print('with id', client.user.id)
     print('READY')
+    print()
 
 
 client.run(TOKEN)
