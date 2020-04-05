@@ -57,32 +57,10 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    # get ongoing game
+    # get ongoing game and evaluate message
     game = Game()
     if game.game_started:
-
-        # check if message is part of the game
-        if message.content not in ["fan", "far", "naque"]:
-            return
-
-        # get current state
-        cur_state = game.order[game.current_state]
-        if message.content == cur_state[0]:
-            # if message is correct, go to next item
-            game.current_state+=1
-            # avoid out of range
-            if game.current_state >= len(game.order):
-                game.game_started = False
-                await message.channel.send("Bravo, tu es arrivé au bout du jeu!")
-                return
-            # ok, continue the game
-            #await message.channel.send("Super, continue!")
-            return
-        else:
-            # you lost the game
-            game.current_state = 0
-            await message.channel.send("Raté! Tu en étais à {0}, recommence!".format(cur_state[1]))
-            return
+        await game.evaluate(message)
 
     await parse_command(message)
 
