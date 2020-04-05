@@ -71,7 +71,7 @@ async def on_message(message):
             # if message is correct, go to next item
             game.current_state+=1
             # avoid out of range
-            if game.current_state >= len(game.order):
+            if game.order[game.current_state][0] == "END":
                 game.game_started = False
                 await message.channel.send("Bravo, tu es arrivé au bout du jeu!")
                 return
