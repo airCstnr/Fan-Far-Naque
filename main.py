@@ -7,6 +7,7 @@ from actions.action_list import ActionList
 # Don't orget to include here your new actions
 from actions.help import Help
 from actions.start import Start
+from actions.mode import Mode
 
 from game import Game
 
@@ -35,6 +36,7 @@ if test_mode:
 # Add here your different actions
 ActionList.add_action(Help)
 ActionList.add_action(Start)
+ActionList.add_action(Mode)
 
 
 def action_called(action, message_content):

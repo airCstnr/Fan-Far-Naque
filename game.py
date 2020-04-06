@@ -78,13 +78,20 @@ class Game():
             return
 
         else:
-            # you lost the game
+            msg = "Tu en étais à {0}.\n\n".format(cur_state[1])
+
             if self.mode == "strict":
+                # you lost the game
                 self.current_state = 0
+                msg += "Recommence!"
+                color = 16711680
+            else:
+                msg += "Continue!"
+                color = 10751
 
             embed = discord.Embed()
             embed.title = "Raté"
-            embed.description = "Tu en étais à {0}, recommence!".format(cur_state[1])
-            embed.color = 16711680
+            embed.description = msg
+            embed.color = color
             await message.channel.send(embed=embed)
             return
