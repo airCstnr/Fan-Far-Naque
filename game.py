@@ -1,5 +1,6 @@
 import sys
 import json
+import discord
 
 
 def singleton(className):
@@ -30,13 +31,20 @@ class Game():
 
     game_started = False
     current_state = 0
+    lang = "fanf"
+    mode = "strict"
 
     def __init__(self):
         print("Init", __class__.__name__)
-        self.dico = get_lang_dico("fanf")
         with open('order.json') as f:
             data = json.load(f)
             self.order = data['order']
+
+    async def start(self):
+        self.dico = get_lang_dico(self.lang)
+        self.game_started = True
+        self.current_state = 0
+
 
     async def evaluate(self, message):
         # check if message is part of the game
@@ -54,16 +62,29 @@ class Game():
         if word == cur_state[0]:
             # if message is correct, go to next item
             self.current_state+=1
+
             # avoid out of range
             if self.order[self.current_state][0] == "END":
                 self.game_started = False
-                await message.channel.send("Bravo, tu es arrivé au bout du jeu!")
+
+                embed = discord.Embed()
+                embed.title = "Bravo"
+                embed.description = "Tu es arrivé au bout du jeu!"
+                embed.color = 49206
+                await message.channel.send(embed=embed)
                 return
+
             # ok, continue the game
-            #await message.channel.send("Super, continue!")
             return
+
         else:
             # you lost the game
-            self.current_state = 0
-            await message.channel.send("Raté! Tu en étais à {0}, recommence!".format(cur_state[1]))
+            if self.mode == "strict":
+                self.current_state = 0
+
+            embed = discord.Embed()
+            embed.title = "Raté"
+            embed.description = "Tu en étais à {0}, recommence!".format(cur_state[1])
+            embed.color = 16711680
+            await message.channel.send(embed=embed)
             return

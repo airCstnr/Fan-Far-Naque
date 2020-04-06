@@ -1,3 +1,5 @@
+import discord
+
 from actions.action import AbstractAction
 from actions.action_list import ActionList
 
@@ -22,7 +24,7 @@ class Help(AbstractAction):
 
     @staticmethod
     async def on_call(message, client):
-        help_txt = "*Fan-Far-Naque!*\n```"
+        help_txt = ""
         shorts = []
         fulls = []
         descriptions = []
@@ -41,14 +43,15 @@ class Help(AbstractAction):
 
             descriptions.append(action.help_description())
 
-        longest_short = max(len(txt) for txt in shorts)
-        longest_full = max(len(txt) for txt in fulls)
         for i in range(len(shorts)):
-            help_txt += "{} | {} - {}\n".format(
-                shorts[i] + ((longest_short - len(shorts[i])) * " "),
-                fulls[i] + ((longest_full - len(fulls[i])) * " "),
+            help_txt += "`{} | {}`\n{}\n\n".format(
+                shorts[i],
+                fulls[i],
                 descriptions[i]
             )
-        help_txt += "```"
 
-        await message.channel.send(help_txt)
+        embed = discord.Embed()
+        embed.description = help_txt
+        embed.color = 10751
+
+        await message.channel.send(embed=embed)
