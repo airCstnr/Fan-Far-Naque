@@ -1,3 +1,5 @@
+import discord
+
 from actions.action import AbstractAction
 from actions.action_list import ActionList
 
@@ -16,12 +18,11 @@ class Start(AbstractAction):
 
     @staticmethod
     def help_description():
-        return "Commencer une partie avec une langue au choix " + \
-            "(latin, fanf, poke)"
+        return "Commencer une partie avec une langue au choix"
 
     @staticmethod
     def help_args():
-        return ["[game]"]
+        return ["latin", "fanf", "poke"]
 
     @staticmethod
     async def on_call(message, client):
@@ -31,15 +32,17 @@ class Start(AbstractAction):
         # get language if any
         split = message.content.split()
         if len(split) > 1:
-            game.dico = get_lang_dico(split[1])
+            game.lang = split[1]
+        else:
+            game.lang = "fanf"
 
         # start game
         print('Start game')
-        game.game_started = True
-        game.current_state = 0
+        await game.start()
 
-        help_txt = "Jouons ensemble! Les mots dispo sont `" + \
-            ", ".join(game.dico) + \
-            "`"
+        embed = discord.Embed()
+        embed.title = "Jouons ensemble"
+        embed.description = "Les mots sont `{}`".format(", ".join(game.dico))
+        embed.color = 10751
 
-        await message.channel.send(help_txt)
+        await message.channel.send(embed=embed)
