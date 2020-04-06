@@ -73,7 +73,7 @@ class Game():
                 embed = discord.Embed()
                 embed.title = "Bravo"
                 embed.description = "Tu es arrivé au bout du jeu!"
-                embed.color = 49206
+                embed.color = discord.Color.green()
                 await message.channel.send(embed=embed)
                 return
 
@@ -87,10 +87,10 @@ class Game():
                 # you lost the game
                 self.current_state = 0
                 msg += "Recommence!"
-                color = 16711680
+                color = discord.Color.red()
             else:
                 msg += "Continue!"
-                color = 10751
+                color = discord.Color.orange()
 
             embed = discord.Embed()
             embed.title = "Raté"

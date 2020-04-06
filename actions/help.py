@@ -52,6 +52,6 @@ class Help(AbstractAction):
 
         embed = discord.Embed()
         embed.description = help_txt
-        embed.color = 10751
+        embed.color = discord.Color.blue()
 
         await message.channel.send(embed=embed)
