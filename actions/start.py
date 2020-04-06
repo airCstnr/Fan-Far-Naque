@@ -18,12 +18,11 @@ class Start(AbstractAction):
 
     @staticmethod
     def help_description():
-        return "Commencer une partie avec une langue au choix " + \
-            "(latin, fanf, poke)"
+        return "Commencer une partie avec une langue au choix"
 
     @staticmethod
     def help_args():
-        return ["[game]"]
+        return ["latin", "fanf", "poke"]
 
     @staticmethod
     async def on_call(message, client):
