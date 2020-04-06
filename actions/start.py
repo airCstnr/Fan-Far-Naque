@@ -3,7 +3,7 @@ import discord
 from actions.action import AbstractAction
 from actions.action_list import ActionList
 
-from game.game import Game, get_lang_dico
+from game.game import Game, GameList, get_lang_dico
 
 
 class Start(AbstractAction):
@@ -26,8 +26,9 @@ class Start(AbstractAction):
 
     @staticmethod
     async def on_call(message, client):
-        # get singleton game
+        # create game and add it to games list
         game = Game()
+        GameList.games[message.channel] = game
 
         # get language if any
         split = message.content.split()

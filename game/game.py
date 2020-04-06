@@ -26,7 +26,10 @@ def get_lang_dico(lang):
             return words_list
 
 
-@singleton
+class GameList:
+    games = {}
+
+
 class Game():
 
     game_started = False
