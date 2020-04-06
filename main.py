@@ -9,7 +9,7 @@ from actions.help import Help
 from actions.start import Start
 from actions.mode import Mode
 
-from game import Game
+from game.game import Game
 
 
 # Check if token was given

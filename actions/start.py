@@ -3,7 +3,7 @@ import discord
 from actions.action import AbstractAction
 from actions.action_list import ActionList
 
-from game import Game, get_lang_dico
+from game.game import Game, get_lang_dico
 
 
 class Start(AbstractAction):
