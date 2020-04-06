@@ -9,7 +9,7 @@ from actions.help import Help
 from actions.start import Start
 from actions.mode import Mode
 
-from game import Game
+from game.game import Game, GameList
 
 
 # Check if token was given
@@ -63,8 +63,8 @@ async def on_message(message):
         return
 
     # get ongoing game and evaluate message
-    game = Game()
-    if game.game_started:
+    game = GameList.games.get(message.channel)
+    if game and game.game_started:
         await game.evaluate(message)
 
     await parse_command(message)

@@ -3,7 +3,7 @@ import discord
 from actions.action import AbstractAction
 from actions.action_list import ActionList
 
-from game import Game
+from game.game import Game, GameList
 
 
 class Mode(AbstractAction):
@@ -26,18 +26,26 @@ class Mode(AbstractAction):
 
     @staticmethod
     async def on_call(message, client):
-        # get mode
-        split = message.content.split()
-        if (len(split) == 2 and
-            split[1] in ["strict", "sympa"]) :
-            game = Game()
-            game.mode = split[1]
-            description = "Mode set to `{}`".format(split[1])
+        # get ongoing game
+        game = GameList.games.get(message.channel)
+        if game:
+            # get argument
+            split = message.content.split()
+            if (len(split) == 2 and
+                split[1] in ["strict", "sympa"]) :
+                game.mode = split[1]
+                description = "Mode de jeu `{}`".format(split[1])
+                color = discord.Color.green()
+            else:
+                description = "Arguments invalides."
+                color = discord.Color.red()
         else:
-            description = "Wrong command. Use `strict` or `sympa`"
+            description = "Aucune partie en cours."
+            color = discord.Color.orange()
 
+        # create embed
         embed = discord.Embed()
         embed.description = description
-        embed.color = 10751
+        embed.color = color
 
         await message.channel.send(embed=embed)

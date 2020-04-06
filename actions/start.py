@@ -3,7 +3,7 @@ import discord
 from actions.action import AbstractAction
 from actions.action_list import ActionList
 
-from game import Game, get_lang_dico
+from game.game import Game, GameList, get_lang_dico
 
 
 class Start(AbstractAction):
@@ -26,8 +26,9 @@ class Start(AbstractAction):
 
     @staticmethod
     async def on_call(message, client):
-        # get singleton game
+        # create game and add it to games list
         game = Game()
+        GameList.games[message.channel] = game
 
         # get language if any
         split = message.content.split()
@@ -43,6 +44,6 @@ class Start(AbstractAction):
         embed = discord.Embed()
         embed.title = "Jouons ensemble"
         embed.description = "Les mots sont `{}`".format(", ".join(game.dico))
-        embed.color = 10751
+        embed.color = discord.Color.green()
 
         await message.channel.send(embed=embed)
