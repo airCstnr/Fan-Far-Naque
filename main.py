@@ -40,6 +40,9 @@ ActionList.add_action(Mode)
 
 
 def action_called(action, message_content):
+    # avoid "index out of range" if message is empty
+    if not message_content:
+        return False
     first_word = message_content.split()[0]
     full = first_word == ("test" if test_mode else "") + action.command()
     short = action.command_short() is not None and \
