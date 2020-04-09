@@ -26,26 +26,44 @@ class Mode(AbstractAction):
 
     @staticmethod
     async def on_call(message, client):
+        footer = None
+
         # get ongoing game
         game = GameList.games.get(message.channel)
+
         if game:
             # get argument
             split = message.content.split()
-            if (len(split) == 2 and
-                split[1] in ["strict", "sympa"]) :
-                game.mode = split[1]
-                description = "Mode de jeu `{}`".format(split[1])
+            if len(split) == 1:
+                # no argument --> info
+                description = "Mode de jeu `{}`".format(game.mode)
                 color = discord.Color.green()
+            elif len(split) == 2:
+                if split[1] in ["strict", "sympa"]:
+                    # 1 argument --> set
+                    game.mode = split[1]
+                    description = "Nouveau mode de jeu `{}`".format(game.mode)
+                    color = discord.Color.green()
+                else:
+                    # 1 other --> invalid
+                    description = "Argument invalide"
+                    color = discord.Color.red()
+                    footer = "Mode de jeu " + game.mode
             else:
-                description = "Arguments invalides."
+                # more --> invalid
+                description = "Arguments invalides"
                 color = discord.Color.red()
+                footer = "Mode de jeu " + game.mode
         else:
-            description = "Aucune partie en cours."
+            description = "Aucune partie en cours"
             color = discord.Color.orange()
+            footer = "Créez une partie avec /start ou /s"
 
         # create embed
         embed = discord.Embed()
         embed.description = description
         embed.color = color
+        if footer:
+            embed.set_footer(text=footer)
 
         await message.channel.send(embed=embed)
