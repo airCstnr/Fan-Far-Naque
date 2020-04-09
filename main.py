@@ -8,6 +8,7 @@ from actions.action_list import ActionList
 from actions.help import Help
 from actions.start import Start
 from actions.mode import Mode
+from actions.random import Random
 
 from game.game import Game, GameList
 
@@ -37,6 +38,7 @@ if test_mode:
 ActionList.add_action(Help)
 ActionList.add_action(Start)
 ActionList.add_action(Mode)
+ActionList.add_action(Random)
 
 
 def action_called(action, message_content):
