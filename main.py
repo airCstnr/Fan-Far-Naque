@@ -1,4 +1,5 @@
 import sys
+import re
 
 import discord
 
@@ -57,12 +58,17 @@ async def parse_command(message):
         if action_called(action, message.content):
             await action.on_call(message, client)
 
+olinp_message = "D'ailleurs l'argent des Ol'INP n'a toujours pas été remboursé :money_with_wings: :thinking:"
 
 @client.event
 async def on_message(message):
     # we do not want the bot to reply to itself
     if message.author == client.user:
         return
+
+    # if message contains "INP", print an Ol'INP message
+    if re.search("INP", message.content, re.IGNORECASE):
+        await message.channel.send(olinp_message)
 
     # get ongoing game and evaluate message
     game = GameList.games.get(message.channel)
