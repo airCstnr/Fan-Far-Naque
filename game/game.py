@@ -18,6 +18,7 @@ languages = [
     ("latin", latin),
     ("fanf", ["fan", "far", "naque", "gre", "noble", "cd", "troll"]),
     ("poke", ["po", "ke", "mon", "gotta", "catch", "em", "all"]),
+    ("ombi", ["om", "bi", "chou", "à", "la", "cr", "ème"]),
 ]
 
 def get_lang_dico(lang):
