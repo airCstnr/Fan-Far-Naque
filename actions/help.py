@@ -44,7 +44,7 @@ class Help(AbstractAction):
             descriptions.append(action.help_description())
 
         for i in range(len(shorts)):
-            help_txt += "`{} | {}`\n{}\n\n".format(
+            help_txt += "`{}` ou `{}`\n{}\n\n".format(
                 shorts[i],
                 fulls[i],
                 descriptions[i]

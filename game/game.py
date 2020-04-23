@@ -25,6 +25,7 @@ def get_lang_dico(lang):
     for name, words_list in languages:
         if lang == name:
             return words_list
+    return latin
 
 
 class GameList:
@@ -36,7 +37,7 @@ class Game():
     game_started = False
     current_state = 0
     lang = "fanf"
-    mode = "strict"
+    mode = "sympa"
 
     def __init__(self):
         print("Init", __class__.__name__)
