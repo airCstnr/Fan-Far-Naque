@@ -57,6 +57,6 @@ class Start(AbstractAction):
         embed.title = "Jouons ensemble"
         embed.description = "Les mots sont `{}`".format(", ".join(game.dico))
         embed.color = discord.Color.green()
-        embed.set_footer(text="Mode de jeu " + game.mode)
+        embed.set_footer(text="Niveau de jeu " + game.niveau)
 
         await message.channel.send(embed=embed)

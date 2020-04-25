@@ -6,23 +6,25 @@ from actions.action_list import ActionList
 from game.game import Game, GameList
 
 
-class Mode(AbstractAction):
+class Niveau(AbstractAction):
+    
+    liste_niveaux = ["facile", "difficile"]
 
     @staticmethod
     def command():
-        return "/mode"
+        return "/niveau"
 
     @staticmethod
     def command_short():
-        return "/m"
+        return "/n"
 
     @staticmethod
     def help_description():
-        return "Choisir un mode"
+        return "Choisir un niveau"
 
     @staticmethod
     def help_args():
-        return ["strict", "sympa"]
+        return Niveau.liste_niveaux
 
     @staticmethod
     async def on_call(message, client):
@@ -36,24 +38,24 @@ class Mode(AbstractAction):
             split = message.content.split()
             if len(split) == 1:
                 # no argument --> info
-                description = "Mode de jeu `{}`".format(game.mode)
+                description = "Niveau de jeu `{}`".format(game.mode)
                 color = discord.Color.green()
             elif len(split) == 2:
-                if split[1] in ["strict", "sympa"]:
+                if split[1] in Niveau.liste_niveaux:
                     # 1 argument --> set
                     game.mode = split[1]
-                    description = "Nouveau mode de jeu `{}`".format(game.mode)
+                    description = "Nouveau niveau de jeu `{}`".format(game.mode)
                     color = discord.Color.green()
                 else:
                     # 1 other --> invalid
                     description = "Argument invalide"
                     color = discord.Color.red()
-                    footer = "Mode de jeu " + game.mode
+                    footer = "Niveau de jeu " + game.mode
             else:
                 # more --> invalid
                 description = "Arguments invalides"
                 color = discord.Color.red()
-                footer = "Mode de jeu " + game.mode
+                footer = "Niveau de jeu " + game.mode
         else:
             description = "Aucune partie en cours"
             color = discord.Color.orange()

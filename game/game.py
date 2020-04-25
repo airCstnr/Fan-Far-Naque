@@ -37,7 +37,7 @@ class Game():
     game_started = False
     current_state = 0
     lang = "fanf"
-    mode = "sympa"
+    niveau = "facile"
 
     def __init__(self):
         print("Init", __class__.__name__)
@@ -85,7 +85,7 @@ class Game():
         else:
             msg = "Tu en étais à {0}.\n\n".format(cur_state[1])
 
-            if self.mode == "strict":
+            if self.niveau == "difficile":
                 # you lost the game
                 self.current_state = 0
                 msg += "Recommence!"

@@ -8,7 +8,7 @@ from actions.action_list import ActionList
 # Don't orget to include here your new actions
 from actions.help import Help
 from actions.start import Start
-from actions.mode import Mode
+from actions.niveau import Niveau
 from actions.random import Random
 
 from game.game import Game, GameList
@@ -38,7 +38,7 @@ if test_mode:
 # Add here your different actions
 ActionList.add_action(Help)
 ActionList.add_action(Start)
-ActionList.add_action(Mode)
+ActionList.add_action(Niveau)
 ActionList.add_action(Random)
 
 
