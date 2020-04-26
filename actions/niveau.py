@@ -20,7 +20,7 @@ class Niveau(AbstractAction):
 
     @staticmethod
     def help_description():
-        return "Choisir un niveau"
+        return ":signal_strength: Choisir un niveau"
 
     @staticmethod
     def help_args():

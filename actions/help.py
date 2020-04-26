@@ -16,7 +16,7 @@ class Help(AbstractAction):
 
     @staticmethod
     def help_description():
-        return "Afficher cet ecran d'aide"
+        return ":question: Afficher cet ecran d'aide"
 
     @staticmethod
     def help_args():

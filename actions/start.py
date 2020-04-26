@@ -25,7 +25,7 @@ class Start(AbstractAction):
 
     @staticmethod
     def help_description():
-        return "Commencer une partie avec une langue au choix"
+        return ":arrow_forward: Commencer une partie avec une langue au choix"
 
     @staticmethod
     def help_args():

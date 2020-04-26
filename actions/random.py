@@ -20,7 +20,7 @@ class Random(AbstractAction):
 
     @staticmethod
     def help_description():
-        return "Aller à une valeur random"
+        return ":twisted_rightwards_arrows: Activer/Desactiver le mode aléatoire"
 
     @staticmethod
     def help_args():
