@@ -1,8 +1,10 @@
 import sys
 import json
+import random
+
 import discord
 
-
+# -------------------------- SINGLETON ---------------------------------
 def singleton(className):
     """ Holds singletons of className objects """
     instances = {}
@@ -13,35 +15,46 @@ def singleton(className):
     return get_instance
 
 
+# -------------------------- LANG --------------------------------------
 latin = ["i", "v", "x", "l", "c", "d", "m"]
 languages = [
     ("latin", latin),
     ("fanf", ["fan", "far", "naque", "gre", "noble", "cd", "troll"]),
     ("poke", ["po", "ke", "mon", "gotta", "catch", "em", "all"]),
+    ("ombi", ["om", "bi", "chou", "à", "la", "cr", "ème"]),
 ]
 
 def get_lang_dico(lang):
     for name, words_list in languages:
         if lang == name:
             return words_list
+    return latin
 
 
+# -------------------------- ORDER -------------------------------------
+def order():
+    with open('order.json') as f:
+            data = json.load(f)
+            return data['order']
+
+# instanciate it once
+order = order()
+
+
+# -------------------------- GAME LIST ---------------------------------
 class GameList:
     games = {}
 
 
+# -------------------------- GAME --------------------------------------
 class Game():
-
     game_started = False
     current_state = 0
     lang = "fanf"
-    mode = "strict"
+    niveau = "facile"
+    random = False
+    order = order
 
-    def __init__(self):
-        print("Init", __class__.__name__)
-        with open('order.json') as f:
-            data = json.load(f)
-            self.order = data['order']
 
     async def start(self):
         self.dico = get_lang_dico(self.lang)
@@ -64,26 +77,28 @@ class Game():
         cur_state = self.order[self.current_state]
         if word == cur_state[0]:
             # if message is correct, go to next item
-            self.current_state+=1
+            if not self.random:
+                self.current_state+=1
+                # avoid out of range
+                if self.order[self.current_state][0] == "END":
+                    self.game_started = False
 
-            # avoid out of range
-            if self.order[self.current_state][0] == "END":
-                self.game_started = False
+                    embed = discord.Embed()
+                    embed.title = "Bravo"
+                    embed.description = "Tu es arrivé au bout du jeu!"
+                    embed.color = discord.Color.green()
+                    await message.channel.send(embed=embed)
+                    return
 
-                embed = discord.Embed()
-                embed.title = "Bravo"
-                embed.description = "Tu es arrivé au bout du jeu!"
-                embed.color = discord.Color.green()
-                await message.channel.send(embed=embed)
+            else:
+                await self.nextRandomItem(message)
                 return
 
-            # ok, continue the game
-            return
-
         else:
+            # message is erroneous
             msg = "Tu en étais à {0}.\n\n".format(cur_state[1])
 
-            if self.mode == "strict":
+            if self.niveau == "difficile":
                 # you lost the game
                 self.current_state = 0
                 msg += "Recommence!"
@@ -98,3 +113,39 @@ class Game():
             embed.color = color
             await message.channel.send(embed=embed)
             return
+
+
+    async def nextRandomItem(self, message):
+        current_item = self.order[self.current_state][1]
+        next_item = self.order[self.current_state + 1][1]
+        if current_item != next_item:
+            # current item is finised, continue with another random item
+            await self.newRandItem(message)
+        else:
+            # continue current item
+            self.current_state+=1
+
+
+    async def newRandItem(self, message):
+        # get a random index between 0 and len(order)
+        index = random.randrange(len(self.order))
+
+        # set current value to first element of value pointed by index
+        current_value = self.order[index][1]
+        while current_value == self.order[index-1][1]:
+            index -= 1
+            current_value = self.order[index][1]
+
+        # set game state to index
+        self.current_state = index
+
+        description = current_value
+        color = discord.Color.blue()
+
+        # create embed
+        embed = discord.Embed()
+        embed.title = "Donne moi la valeur"
+        embed.description = description
+        embed.color = discord.Color.blue()
+
+        await message.channel.send(embed=embed)

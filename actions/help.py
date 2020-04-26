@@ -16,7 +16,7 @@ class Help(AbstractAction):
 
     @staticmethod
     def help_description():
-        return "Afficher cet ecran d'aide"
+        return ":question: Afficher cet ecran d'aide"
 
     @staticmethod
     def help_args():
@@ -44,7 +44,7 @@ class Help(AbstractAction):
             descriptions.append(action.help_description())
 
         for i in range(len(shorts)):
-            help_txt += "`{} | {}`\n{}\n\n".format(
+            help_txt += "`{}` ou `{}`\n{}\n\n".format(
                 shorts[i],
                 fulls[i],
                 descriptions[i]

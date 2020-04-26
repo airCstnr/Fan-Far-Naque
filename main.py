@@ -1,4 +1,5 @@
 import sys
+import re
 
 import discord
 
@@ -7,7 +8,8 @@ from actions.action_list import ActionList
 # Don't orget to include here your new actions
 from actions.help import Help
 from actions.start import Start
-from actions.mode import Mode
+from actions.niveau import Niveau
+from actions.random import Random
 
 from game.game import Game, GameList
 
@@ -36,7 +38,8 @@ if test_mode:
 # Add here your different actions
 ActionList.add_action(Help)
 ActionList.add_action(Start)
-ActionList.add_action(Mode)
+ActionList.add_action(Niveau)
+ActionList.add_action(Random)
 
 
 def action_called(action, message_content):
@@ -55,12 +58,17 @@ async def parse_command(message):
         if action_called(action, message.content):
             await action.on_call(message, client)
 
+olinp_message = "D'ailleurs l'argent des Ol'INP n'a toujours pas été remboursé :money_with_wings: :thinking:"
 
 @client.event
 async def on_message(message):
     # we do not want the bot to reply to itself
     if message.author == client.user:
         return
+
+    # if message contains "INP", print an Ol'INP message
+    if re.search("INP", message.content, re.IGNORECASE):
+        await message.channel.send(olinp_message)
 
     # get ongoing game and evaluate message
     game = GameList.games.get(message.channel)
