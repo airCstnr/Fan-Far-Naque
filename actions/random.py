@@ -28,35 +28,36 @@ class Random(AbstractAction):
 
     @staticmethod
     async def on_call(message, client):
-        footer = None
+        footerText = None
 
         # get ongoing game
         game = GameList.games.get(message.channel)
 
         if game:
-            # get a random index between 0 and len(order)
-            index = random.randrange(len(game.order))
-
-            # set current value to first element of value pointed by index
-            current_value = game.order[index][1]
-            while current_value == game.order[index-1][1]:
-                index -= 1
-                current_value = game.order[index][1]
-
-            # set game state to index
-            game.current_state = index
-
-            description = current_value
+            # toggle random mode
+            description = "Mode aléatoire "
+            if not game.random:
+                game.random = True
+                description += "activé :twisted_rightwards_arrows:"
+            else:
+                game.random = False
+                description += "désactivé :arrow_right:"
             color = discord.Color.blue()
         else:
             description = "Aucune partie en cours"
             color = discord.Color.orange()
-            footer = "Créez une partie avec /start ou /s"
+            footerText = "Créez une partie avec /start ou /s"
 
         # create embed
         embed = discord.Embed()
-        embed.title = "Donne moi la valeur"
         embed.description = description
-        embed.color = discord.Color.blue()
+        embed.color = color
+        if footerText:
+            embed.set_footer(text=footerText)
 
+        # send embed
         await message.channel.send(embed=embed)
+
+        # prompt new random item
+        if game and game.random:
+            await game.newRandItem(message)
