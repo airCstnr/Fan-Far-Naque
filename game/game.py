@@ -4,7 +4,7 @@ import random
 
 import discord
 
-
+# -------------------------- SINGLETON ---------------------------------
 def singleton(className):
     """ Holds singletons of className objects """
     instances = {}
@@ -15,6 +15,7 @@ def singleton(className):
     return get_instance
 
 
+# -------------------------- LANG --------------------------------------
 latin = ["i", "v", "x", "l", "c", "d", "m"]
 languages = [
     ("latin", latin),
@@ -30,28 +31,36 @@ def get_lang_dico(lang):
     return latin
 
 
+# -------------------------- ORDER -------------------------------------
+def order():
+    with open('order.json') as f:
+            data = json.load(f)
+            return data['order']
+
+# instanciate it once
+order = order()
+
+
+# -------------------------- GAME LIST ---------------------------------
 class GameList:
     games = {}
 
 
+# -------------------------- GAME --------------------------------------
 class Game():
-
     game_started = False
     current_state = 0
     lang = "fanf"
     niveau = "facile"
     random = False
+    order = order
 
-    def __init__(self):
-        print("Init", __class__.__name__)
-        with open('order.json') as f:
-            data = json.load(f)
-            self.order = data['order']
 
     async def start(self):
         self.dico = get_lang_dico(self.lang)
         self.game_started = True
         self.current_state = 0
+
 
     async def evaluate(self, message):
         # check if message is part of the game
