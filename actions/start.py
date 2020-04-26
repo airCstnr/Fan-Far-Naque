@@ -50,7 +50,7 @@ class Start(AbstractAction):
                 return
 
         # start game
-        print('Start game')
+        print('Start game for', message.guild.name, '/', message.channel.name)
         await game.start()
 
         embed = discord.Embed()
